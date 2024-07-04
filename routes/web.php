@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CommunityHelpersController;
+use App\Http\Controllers\HospitalController;
+use App\Http\Controllers\GuardiansController;
 use App\Http\Controllers\SendMailController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,7 +12,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('/users/hospital', function () {
+    return view('hospital');
+});
 Route::get('/dashboard', function () {
     return view('products.preview_pdf');
 })->middleware(['auth', 'verified']) ->name('dashboard');
