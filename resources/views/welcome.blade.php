@@ -6,7 +6,6 @@
     @livewireStyles
 </head>
 <body>
-@vite(['resources/sass/app.scss', 'resources/css/app.css', 'resources/js/app.js'])
 
     <div class="container">
         <div class="row justify-content-center">
@@ -29,6 +28,8 @@
     </div>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @livewireScripts
+    <script src="{{ public_path('resources/js/app.js') }}"></script> <!-- Ensure you have app.js if needed -->
     <script type="text/javascript">
     $(document).ready(function() {
         if (window.livewire) {
