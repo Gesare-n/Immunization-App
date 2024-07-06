@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -18,8 +19,9 @@ class RegisteredUserController extends Controller
      * Display the registration view.
      */
     public function create(): View
-    {
-        return view('my_auth.register');
+    {   $roles= Role::all();
+        
+        return view('my_auth.register',['roles'=>$roles]);
     }
 
     /**
@@ -32,19 +34,27 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'phone' => ['required',  'unique:'.User::class],
+            'id_no' => ['required', 'max:255', 'unique:'.User::class],
+            'role_id' => ['required'],
         ]);
-
+       
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+             'phone'=> $request->phone,
+            'id_no' => $request->id_no,
+            'role_id' => $request->role_id,
+            'password' => Hash::make($request->id_no),
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        if($user->role_id==1){
+        return redirect(route('hospital.dashboard', absolute: false));}
+        else{
+            return redirect(route('community/health/providers/dashboard', absolute: false));
+        }
     }
 }

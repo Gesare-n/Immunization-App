@@ -12,9 +12,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/users/hospital', function () {
-    return view('hospital');
-});
+
 Route::get('/dashboard', function () {
     return view('products.preview_pdf');
 })->middleware(['auth', 'verified']) ->name('dashboard');
@@ -30,7 +28,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/products/pdf/download/{id}', [ProductController::class, 'generatePDF'])->name('product.generatePDF'); 
     Route::get('/create/fpdf/download/{id}', [ProductController::class, 'createPDF'])->name('product.createPDF'); 
     Route::get('/send/mail/{id}', [ProductController::class, 'sendMailWithAttachment'])->name('product.sendMailWithAttachment');
-
+    Route::get('/hospitals/dashboard',  [HospitalController::class, 'dashboard'])->name('hospital.dashboard'); 
+   
 
 });
 require __DIR__.'/auth.php';
