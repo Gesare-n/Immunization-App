@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('place_birth')->nullable();
             $table->integer('gender_id')->unsigned();
             $table->foreign('gender_id')->references('id')->on('genders');
+            $table->integer('parent_id')->unsigned();
+            $table->foreign('parent_id')->references('id')->on('guardians');
             $table->integer('com_h_user_id')->unsigned();
             $table->foreign('com_h_user_id')->references('id')->on('users');
             $table->integer('hosp_user_id')->unsigned();

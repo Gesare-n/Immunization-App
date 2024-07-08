@@ -14,6 +14,7 @@ class Kid extends Model
         'date_of_birth',
         'place_birth',
         'gender_id',
+        'parent_id',
         'com_h_user_id',
         'hosp_user_id',
        

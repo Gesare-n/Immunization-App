@@ -9,12 +9,12 @@ use App\Http\Controllers\SendMailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 
 Route::get('/dashboard', function () {
-    return view('products.preview_pdf');
+    return redirect('/hospitals/dashboard');
 })->middleware(['auth', 'verified']) ->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -29,7 +29,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/create/fpdf/download/{id}', [ProductController::class, 'createPDF'])->name('product.createPDF'); 
     Route::get('/send/mail/{id}', [ProductController::class, 'sendMailWithAttachment'])->name('product.sendMailWithAttachment');
     Route::get('/hospitals/dashboard',  [HospitalController::class, 'dashboard'])->name('hospital.dashboard'); 
-   
-
+    Route::post('/hospitals/show/Guardian',  [HospitalController::class, 'createGuardian'])->name('hospital.createGuardian');
+    Route::get('/hospitals/create/Guardian/Show',  [HospitalController::class, 'createGuardianShow'])->name('hospital.createGuardianShow');
+    Route::post('/hospitals/create/Kid',  [HospitalController::class, 'createKid'])->name('hospital.createKid');
+    Route::get('/hospitals/creates/kids/Show',  [HospitalController::class, 'createKidShow'])->name('hospital.createKidShow');
+    Route::get('/hospitals/search',  [HospitalController::class, 'hospitalSearch'])->name('hospital.hospitalSearch');
+    Route::get('/com_hs/search',  [HospitalController::class, 'communityHealthWorkerSearch'])->name('hospital.communityHealthWorkerSearch');
+    Route::get('/parents/search',  [HospitalController::class, 'parentSearch'])->name('hospital.parentSearch');
+    Route::get('/sendSMS', [HospitalController::class, 'index']);
+    Route::get('/hospitals/select/a/kid', function () {
+        return view('hospital.selectKid');
+    });
+    Route::post('/hospitals/select/Kid',  [HospitalController::class, 'selectKid'])->name('hospital.selectKid');
+    Route::get('/current/kids/vaccines/{id}',  [HospitalController::class, 'vacinateKidShow'])->name('hospital.vacinateKidShow');
+    Route::post('/current/kid/vaccines/{id}',  [HospitalController::class, 'vacinateKidShow'])->name('hospital.vacinateKid');
+    
 });
-require __DIR__.'/auth.php';
+require __DIR__.'/auth.php'; 

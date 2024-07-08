@@ -3,9 +3,22 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="/get/products/dashboard">
+                            <a class="nav-link" href=" /hospitals/dashboard">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
+                            </a>
+                          
+                            <a class="nav-link" href="/hospitals/create/Guardian/Show">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Register A Parent
+                            </a>
+                            <a class="nav-link" href="/hospitals/creates/kids/Show">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Register A Kid
+                            </a>
+                            <a class="nav-link" href="/hospitals/select/a/kid">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Vaccinate a kid
                             </a>
                             <!-- <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
