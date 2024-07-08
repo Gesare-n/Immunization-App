@@ -14,7 +14,6 @@ use App\Models\KidsGuardian;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
 use Exception;
 use Twilio\Rest\Client;
 class HospitalController extends Controller
@@ -249,9 +248,61 @@ return redirect()->back()->with($notification);
         }
     }
     
-    public function vacinateKid(){
+    public function vacinateKid(Request $request,$encoded_kid_id){
+        $kid_id= base64_decode($encoded_kid_id);
+        $vaccines= $request->all();
+        DB::beginTransaction();
+        try{
+        foreach ($vaccines as $key => $value) {
+            if (strpos($key, 'administered_') === 0 && $value === 'yes') {
+                // Extract the vaccine_id from the key
+                $vaccine_id = str_replace('administered_', '', $key);
+               $kid_vaccines=KidsVaccine::where('vaccine_id', $vaccine_id)
+                                            ->where('kid_id', $kid_id)
+                                            ->get();
+               if($kid_vaccines->isNotEmpty()){                          
+                    KidsVaccine::where('vaccine_id', $vaccine_id)
+                                    ->where('kid_id', $kid_id)
+                                    ->update(['real_admin_date' => Carbon::now()->format('Y-m-d'),
+                                             'hosp_user_id'=>Auth::id(),]);}
+                else{
+                    KidsVaccine::create(['kid_id'=>$kid_id,
+                                    'vaccine_id'=> $vaccine_id,
+                                    'hosp_user_id'=>Auth::id(),
+                                    'real_admin_date'=> Carbon::now()->format('Y-m-d')
+                                ]);
+                }    
+            } 
+        }
+       
+         $next_vaccines= Vaccines::where('admin_days', $vaccines["next_vaccination_days"])
+                                    ->get();
 
+        if($next_vaccines->isNotEmpty()){
+            foreach($next_vaccines as $next_vaccine){
+            KidsVaccine::create(['kid_id'=>$kid_id,
+                                'vaccine_id'=> $next_vaccine['id'],
+                                'hosp_user_id'=> $vaccines['hospital_id'],
+                                'admin_date'=> $vaccines['vaccine_next_date']
+                             ]);
+                     }
+                 }
+                
+        DB::commit();
+        $notification = array(
+            'alert-type' => 'success',
+            'message' => 'Kids vaccination records set successfully');
+       
+        }
+    catch (Exception $e) {
+            DB::rollback();
+            $notification = array(
+            'alert-type' => 'error',
+            'message' => 'Oooops!! an error occurred contact admins for assistance'
+            );  
     }
+    return redirect()->back()->with($notification);
+ }
     public function vacinateKidShow($encoded_kid_id){
         $kid_id= base64_decode($encoded_kid_id);
         $kid=Kid::where('id',$kid_id)
@@ -283,20 +334,26 @@ if ($closestAdminDays !== null) {
 
 }
 
-            function formatAdminDays($days) {
-                if ($days === 0) {
-                    return 'at birth';
-                } elseif ($days < 7) {
-                    return $days . ' day' . ($days > 1 ? 's' : '');
-                } elseif ($days < 30) {
-                    $weeks = floor($days / 7);
-                    return $weeks . ' week' . ($weeks > 1 ? 's' : '');
-                } else {
-                    $months = floor($days / 30);
-                    return $months . ' month' . ($months > 1 ? 's' : '');
-                }
-                
-            }
+    function formatAdminDays($days) {
+        if ($days === 0) {
+            return 'at birth';
+        } elseif ($days < 7) {
+            return $days . ' day' . ($days > 1 ? 's' : '');
+        } elseif ($days < 30) {
+            $weeks = floor($days / 7);
+            $remainingDays = $days % 7;
+            $weeksStr = $weeks . ' week' . ($weeks > 1 ? 's' : '');
+            $daysStr = $remainingDays > 0 ? ' and ' . $remainingDays . ' day' . ($remainingDays > 1 ? 's' : '') : '';
+            return $weeksStr . $daysStr;
+        } else {
+            $months = floor($days / 30);
+            $remainingDays = $days % 30;
+            $monthsStr = $months . ' month' . ($months > 1 ? 's' : '');
+            $daysStr = $remainingDays > 0 ? ' and ' . $remainingDays . ' day' . ($remainingDays > 1 ? 's' : '') : '';
+            return $monthsStr . $daysStr;
+        }
+    }
+
             
             $formattedAdminDays = formatAdminDays($closestAdminDays);
             $formattednextAdminDays = formatAdminDays($nextClosestAdminDays);
@@ -312,16 +369,42 @@ if ($closestAdminDays !== null) {
                                             'hospitals'=>$hospitals,
                                              'kid_hosp'=> $kid['hosp_user_id'],
                                              'nextAdminDate'=>$nextAdminDate,
-                                            'formattednextAdminDays'=> $formattednextAdminDays]);
+                                            'formattednextAdminDays'=> $formattednextAdminDays,
+                                            'nextClosestAdminDays'=>$nextClosestAdminDays]);
         }else{
             dd('no vaccine');
         }
 
     }
     public function index()
-    {
+    {   
+       $vaccination_date =Carbon::now()->addDays(7);
+
+       $kids_vaccines = KidsVaccine::leftjoin('users','users.id','=','kids_vaccines.hosp_user_id')
+                                ->where('admin_date', $vaccination_date)
+                                ->orWhere('exp_admin_date', $vaccination_date)
+                                ->orWhere('kids_vaccines.id', 8)
+                                ->distinct()
+                                ->select('kids_vaccines.*','users.name')
+                                ->get();
+        foreach($kids_vaccines as $kids_vaccine) {                       
+        $secondary_parents = KidsGuardian::where('kid_id', $kids_vaccine['kid_id'])
+                                        ->pluck('guardian_id')
+                                        ->toArray();
+        $kid= Kid::where('id',$kids_vaccine['kid_id'])->first();
+
+             $guardians= Guardian::leftjoin('languages','languages.id','=','guardians.language_id')
+                                    ->where('guardians.id', $kid['parent_id'])
+                                    ->orWhereIn('guardians.id', $secondary_parents)
+                                    ->select('guardians.*')
+                                    ->get();
+              foreach($guardians as $guardian){                          
+                
+                   // $message = "Hello ".$guardian['guardian_name'].', '.$kids_vaccine['name'].' hospital is reminding you that '.$kid['kid_name'].' is supposed to be vaccinated on'$vaccination_date->format('F j, Y').' Thank you.' ;
+                    $message = "Hujambo ".$guardian['guardian_name'].', hospitali ya '.$kids_vaccine['name'].' inakukumbusha kuwa '.$kid['kid_name'].' anapaswa kupewa chanjo tarehe '.$vaccination_date->toFormattedDayDateString().' Asante.' ;                                               
+   
         $receiverNumber = "+254740203067";
-        $message = "This is testing from".env('APP_NAME');
+        
   
         try {
   
@@ -338,9 +421,124 @@ if ($closestAdminDays !== null) {
   
         } catch (Exception $e) {
             dd("Error: ". $e->getMessage());
+        }}
+    }
+    }
+
+    public function parentSelectKid(Request $request){
+        $parent_phone = $request->input('phone');
+        $parentdetails = Guardian::where('phone', $parent_phone)->first();
+    
+        if ($parentdetails) {
+            $parent_id = $parentdetails->id;
+    
+            $secondary_kids = KidsGuardian::where('guardian_id', $parent_id)
+                               ->pluck('kid_id')
+                               ->toArray();
+    
+            $kids = Kid::leftjoin('genders','genders.id','=','kids.gender_id')
+
+            ->where('parent_id', $parent_id)
+                    ->orWhereIn('id', $secondary_kids)
+                    ->select('kids.*','genders.gender_name')
+                    ->get();
+    
+            if ($kids->isNotEmpty()) {
+                return view('parents.parentsKid', ['kids' => $kids]);
+            } else {
+                $notification = array(
+                    'alert-type' => 'error',
+                    'message' => 'Ooops!! The parent or guardian has no kid registered in this system',
+                );
+                return redirect()->back()->with($notification);
+            }
+        } else {
+            $notification = array(
+                'alert-type' => 'error',
+                'message' => 'Ooops!! The parent with the given phone number does not exist',
+            );
+            return redirect()->back()->with($notification);
         }
     }
 
+    public function parentVacinateKidShow($encoded_kid_id){
+        $kid_id= base64_decode($encoded_kid_id);
+        $kid=Kid::where('id',$kid_id)
+                ->first();
+                      
+        $parentNextVaccinationDateVaccine_id = KidsVaccine::select('vaccine_id')
+                ->where('kid_id', $kid_id)
+                ->where('real_admin_date',null)
+                ->pluck('vaccine_id')
+                ->toArray();
+        $parentVaccines=Vaccines::whereIn('id', $parentNextVaccinationDateVaccine_id)  
+                                ->get();           
+        $birthDate = Carbon::parse($kid->date_of_birth);
+        $currentDate = Carbon::now();
+        $days = $birthDate->diffInDays($currentDate);
 
+        $closestAdminDays = Vaccines::select('admin_days')
+            ->orderBy(DB::raw('ABS(admin_days - ?)'), 'asc')
+            ->setBindings([$days])
+            ->first()
+            ->admin_days ?? null;
+        
+            $nextClosestAdminDays = null;
+if ($closestAdminDays !== null) {
+    $nextClosestAdminDaysRecord = Vaccines::select('admin_days')
+        ->where('admin_days', '>', $closestAdminDays)
+        ->orderBy('admin_days', 'asc')
+        ->first();
+
+    $nextClosestAdminDays = $nextClosestAdminDaysRecord->admin_days ?? null;
+    $nextAdminDate = $birthDate->copy()->addDays($nextClosestAdminDays);
+    $nextAdminDate = $nextAdminDate->format('Y-m-d');
+}else{
+    $nextAdminDate = null;
+
+}
+
+    function parentsFormatAdminDays($days) {
+        if ($days === 0) {
+            return 'at birth';
+        } elseif ($days < 7) {
+            return $days . ' day' . ($days > 1 ? 's' : '');
+        } elseif ($days < 30) {
+            $weeks = floor($days / 7);
+            $remainingDays = $days % 7;
+            $weeksStr = $weeks . ' week' . ($weeks > 1 ? 's' : '');
+            $daysStr = $remainingDays > 0 ? ' and ' . $remainingDays . ' day' . ($remainingDays > 1 ? 's' : '') : '';
+            return $weeksStr . $daysStr;
+        } else {
+            $months = floor($days / 30);
+            $remainingDays = $days % 30;
+            $monthsStr = $months . ' month' . ($months > 1 ? 's' : '');
+            $daysStr = $remainingDays > 0 ? ' and ' . $remainingDays . ' day' . ($remainingDays > 1 ? 's' : '') : '';
+            return $monthsStr . $daysStr;
+        }
+    }
+
+            
+            $formattedAdminDays = parentsFormatAdminDays($closestAdminDays);
+            $formattednextAdminDays = parentsFormatAdminDays($nextClosestAdminDays);
+            
+
+           
+        if ($closestAdminDays !== null) {
+            
+            $hospitals = User::where('role_id',1)->get();
+            return view('parents.vaccinateKid',['vaccines'=>$parentVaccines,
+                                            'adminDays'=> $formattedAdminDays,
+                                            'encoded_kid_id'=>$encoded_kid_id,
+                                            'hospitals'=>$hospitals,
+                                             'kid_hosp'=> $kid['hosp_user_id'],
+                                             'nextAdminDate'=>$nextAdminDate,
+                                            'formattednextAdminDays'=> $formattednextAdminDays,
+                                            'nextClosestAdminDays'=>$nextClosestAdminDays]);
+        }else{
+            dd('no vaccine');
+        }
+
+    }
 
 }

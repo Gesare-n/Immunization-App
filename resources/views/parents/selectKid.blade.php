@@ -13,7 +13,7 @@
         <div class="card shadow-lg border-0 rounded-lg mt-5">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">Enter parents phone number</h3></div>
             <div class="card-body">
-            <form method="POST" action="{{ route('hospital.selectKid') }}">
+            <form method="POST" action="{{ route('parents.selectKid') }}">
                     @csrf
                     <div class="form-floating mb-3">
                         <input class="form-control" id="inputEmail" type="tel" placeholder="+254740203067" name="phone" required autofocus/>

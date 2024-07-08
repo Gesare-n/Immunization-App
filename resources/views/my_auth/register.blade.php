@@ -14,7 +14,7 @@
                     <div class="card shadow-lg border-0 rounded-lg mt-5">
                         <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Account</h3></div>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('register') }}">
+                            <form method="POST" action="{{route('register') }}">
                             @csrf
                             
                             <div class="row mb-3">
@@ -95,7 +95,7 @@
                             </form>
                         </div>
                         <div class="card-footer text-center py-3">
-                            <div class="small"><a href="{{ route('login') }}">Have an account? Go to login</a></div>
+                            <div class="small"><a href="{{route('login') }}">Have an account? Go to login</a></div>
                         </div>
                     </div>
                 </div>

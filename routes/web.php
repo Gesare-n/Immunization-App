@@ -12,7 +12,12 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-
+Route::get('/parents', function () {
+    return view('parents.selectKid');
+});
+Route::post('/parents/select/Kid',  [HospitalController::class, 'parentSelectKid'])->name('parents.selectKid');
+Route::get('/parents/kids/vaccines/{id}',  [HospitalController::class, 'parentVacinateKidShow'])->name('parent.vacinateKidShow');
+Route::post('/parents/kid/vaccines/{id}',  [HospitalController::class, 'vacinateKid'])->name('parent.vacinateKid');
 Route::get('/dashboard', function () {
     return redirect('/hospitals/dashboard');
 })->middleware(['auth', 'verified']) ->name('dashboard');
@@ -42,7 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     Route::post('/hospitals/select/Kid',  [HospitalController::class, 'selectKid'])->name('hospital.selectKid');
     Route::get('/current/kids/vaccines/{id}',  [HospitalController::class, 'vacinateKidShow'])->name('hospital.vacinateKidShow');
-    Route::post('/current/kid/vaccines/{id}',  [HospitalController::class, 'vacinateKidShow'])->name('hospital.vacinateKid');
+    Route::post('/current/kid/vaccines/{id}',  [HospitalController::class, 'vacinateKid'])->name('hospital.vacinateKid');
     
 });
 require __DIR__.'/auth.php'; 
