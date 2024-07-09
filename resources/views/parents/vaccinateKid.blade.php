@@ -1,4 +1,4 @@
-@extends('layouts.my_app')
+@extends('layouts.my_auth_master')
 @section('subtitle')
  Parent register
 @endsection
@@ -21,13 +21,13 @@ Parent register
                             <form method="POST" action="{{ route('hospital.vacinateKid',[$encoded_kid_id]) }}">
                             @csrf
                           
-                            <input class="form-control" id="inputname" value="{{$nextClosestAdminDays}}" name="next_vaccination_days" type="text"  required hidden/>
+                            <input class="form-control" id="inputname" value="{{$nextClosestAdminDays}}" name="next_vaccination_days" type="text"  required hidden disabled/>
                             <div class="row mb-3">
                             <h5 class="text-center font-weight-light ">Next Visitation:{{$formattednextAdminDays}}</h5>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3 mb-md-0">
                                        
-                                    <input class="form-control" id="inputname" value="{{$nextAdminDate}}" name="vaccine_next_date" type="date" placeholder="Enter user name"  required autocomplete="kid_name"/>
+                                    <input class="form-control" id="inputname" value="{{$nextAdminDate}}" name="vaccine_next_date" type="date" placeholder="Enter user name"  required disabled/>
                                         <label for="inputPassword">Date</label>
                                         
                                     </div>
@@ -78,14 +78,12 @@ Parent register
                             
                                 <div class="mt-4 mb-0">
                                     <div class="d-grid">
-                                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                                        <button type="submit" class="btn btn-primary btn-block">Back</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                        <div class="card-footer text-center py-3">
-                            <div class="small"><a href="{{ route('login') }}">Have an account? Go to login</a></div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>

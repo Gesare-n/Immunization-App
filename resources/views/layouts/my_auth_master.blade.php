@@ -8,14 +8,18 @@
         <meta name="author" content="" />
         <title>{{ENV('APP_NAME')}} -@yield('subtitle')</title>
         @vite(['resources/sass/app.scss', 'resources/css/app.css', 'resources/js/app.js'])
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/> 
+        <link href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css" rel="stylesheet"/> 
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
+    @include('layouts.partials.header')
+    @include('layouts.partials.scripts')
     <body class="bg-primary">
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
                 <main>
                     <div class="container">
-                       
+                      
                             @yield('content')
                            
                     </div>

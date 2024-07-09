@@ -9,12 +9,12 @@ use App\Http\Controllers\SendMailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect('/parents');
 });
 
 Route::get('/parents', function () {
     return view('parents.selectKid');
-});
+})->name('parents.selectKid');
 Route::post('/parents/select/Kid',  [HospitalController::class, 'parentSelectKid'])->name('parents.selectKid');
 Route::get('/parents/kids/vaccines/{id}',  [HospitalController::class, 'parentVacinateKidShow'])->name('parent.vacinateKidShow');
 Route::post('/parents/kid/vaccines/{id}',  [HospitalController::class, 'vacinateKid'])->name('parent.vacinateKid');

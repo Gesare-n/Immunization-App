@@ -186,14 +186,12 @@ Kid register
                                             </div>
                                 <div class="mt-4 mb-0">
                                     <div class="d-grid">
-                                        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                                        <button type="submit" class="btn btn-primary btn-block">Registe a Kid</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                        <div class="card-footer text-center py-3">
-                            <div class="small"><a href="{{ route('login') }}">Have an account? Go to login</a></div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>

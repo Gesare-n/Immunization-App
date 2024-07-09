@@ -17,7 +17,9 @@
        
         @include('layouts.partials.header')
         <div id="layoutSidenav">
-            @include('layouts.partials.sidebar')
+            @auth
+             @include('layouts.partials.sidebar')
+            @endauth
             @include('layouts.partials.scripts')
             <div id="layoutSidenav_content">
                 <main>
