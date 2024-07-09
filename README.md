@@ -1,66 +1,50 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <a href="#">
+    <img src="https://your-app-logo-url.png" width="400" alt="ChanjoHealth Logo">
+  </a>
 </p>
 
-## About Laravel
+<p align="center">
+  
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## About The Immunization App
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+ChanjoHealth is an innovative web application built with Laravel, designed to streamline immunization tracking and notification processes. It aims to address the challenge of missed vaccination schedules among children, thereby improving community health outcomes.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Key Features
 
-## Learning Laravel
+- **Immunization Tracking**: Easily keep track of your child's vaccination schedule.
+- **Appointment Booking**: Schedule appointments at nearby clinics directly through the platform.
+- **Reminder Notifications**: Receive timely reminders for upcoming vaccinations.
+- **Admin Dashboard**: Healthcare workers can manage immunization records and appointments.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Learning ChanjoHealth
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+ChanjoHealth provides comprehensive documentation to help you get started with the application. Visit our [documentation](https://your-docs-url) for detailed guides on installation, usage, and more.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+We welcome contributions to ChanjoHealth! Please follow our [contribution guide](https://your-contribution-guide-url) to learn how you can contribute to making ChanjoHealth even better.
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you discover any security vulnerabilities in ChanjoHealth, please report them to our team at [security@chanjohealth.com](mailto:security@chanjohealth.com). We take security seriously and appreciate your help in keeping ChanjoHealth safe.
+
+##Acknowledgements
+Acknowledgments: Recognize and thank contributors, libraries, or organizations that have supported the development of ChanjoHealth.
+Laravel Framework: For providing a robust PHP framework that streamlined our development process.
+Bootstrap: For the responsive front-end framework that helped us design a sleek and user-friendly interface.
+FontAwesome: For the comprehensive library of icons that enhanced the visual appeal of ChanjoHealth.
+Firebase: For the reliable backend services that supported our real-time features and data storage needs.
+Twilio: For the communication APIs that enabled SMS notifications and enhanced user engagement.
+
+  ##Developers:Evans Odero
+               Solomon Ngandu
+               Shaldon Nonga
+               Nicole G Onyiego
+
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+ChanjoHealth is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
