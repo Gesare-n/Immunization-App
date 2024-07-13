@@ -43,6 +43,7 @@ Twilio: For the communication APIs that enabled SMS notifications and enhanced u
                Solomon Ngandu
                Shaldon Nonga
                Nicole G Onyiego
+##Link to project on devpost:https://devpost.com/software/chanjo-health-immunization-app?ref_content=user-portfolio&ref_feature=in_progress
 
 
 ## License
